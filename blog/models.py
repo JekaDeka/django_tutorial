@@ -12,6 +12,10 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
     class Meta:
         verbose_name = 'Запись в блоге'
         verbose_name_plural = 'Записи в блоге'
