@@ -12,6 +12,9 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
+    def is_publish(self):
+        return True if self.published_date else False
+
     def publish(self):
         self.published_date = timezone.now()
         self.save()
