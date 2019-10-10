@@ -1,5 +1,7 @@
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.shortcuts import (get_object_or_404, redirect, render,
+                              render_to_response)
+from django.utils import timezone
 
 from .forms import PostForm
 from .models import Post
@@ -18,7 +20,16 @@ def post_detail(request, id):
 
 
 def post_add(request):
-    form = PostForm()
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', id=post.id)
+    else:
+        form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
