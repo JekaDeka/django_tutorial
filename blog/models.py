@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
-from .managers import PostPublishedManager
+from .managers import PostManager, PostPublishedManager
 
 
 class Post(models.Model):
@@ -13,7 +14,12 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+
+    objects = PostManager()
     published = PostPublishedManager()
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
     def is_publish(self):
         return True if self.published_date else False

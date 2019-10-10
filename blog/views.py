@@ -5,7 +5,7 @@ from .models import Post
 
 
 def post_list(request):
-    posts = Post.published.all().order_by('published_date')
+    posts = Post.objects.for_user(user=request.user)
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
