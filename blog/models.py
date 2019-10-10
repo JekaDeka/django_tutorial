@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from .managers import PostPublishedManager
+
 
 class Post(models.Model):
     """Django data model Post"""
@@ -11,6 +13,7 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    published = PostPublishedManager()
 
     def is_publish(self):
         return True if self.published_date else False
