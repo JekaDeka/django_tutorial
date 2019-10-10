@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, render_to_response
 
+from .forms import PostForm
 from .models import Post
 
 
@@ -14,6 +15,11 @@ def post_detail(request, id):
     if not post.is_publish() and not request.user.is_staff:
         raise Http404("Запись в блоге не найдена")
     return render(request, 'blog/post_detail.html', {'post': post})
+
+
+def post_add(request):
+    form = PostForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
 
 
 def handler404(request, exception, template_name="404.html"):
