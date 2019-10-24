@@ -1,4 +1,4 @@
-from django.db.models import Manager, QuerySet
+from django.db.models import Manager, Q, QuerySet
 from django.utils import timezone
 
 
@@ -6,6 +6,9 @@ class PostQuerySet(QuerySet):
     def for_user(self, user=None):
         if user.is_staff:
             return self.all()
+        elif user.is_authenticated:
+            return self.filter(
+                Q(published_date__lte=timezone.now()) | Q(author=user))
         else:
             return self.filter(published_date__lte=timezone.now())
 
