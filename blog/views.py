@@ -4,7 +4,7 @@ from django.shortcuts import (get_object_or_404, redirect, render,
                               render_to_response)
 from django.utils import timezone
 
-from .forms import PostForm
+from .forms import CommentForm, PostForm
 from .models import Post
 
 
@@ -46,6 +46,20 @@ def post_publish(request, id):
     post = get_object_or_404(Post, id=id)
     post.publish()
     return redirect('post_detail', id=id)
+
+
+def add_comment(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', id=post.id)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment.html', {'form': form})
 
 
 def handler404(request, exception, template_name="404.html"):

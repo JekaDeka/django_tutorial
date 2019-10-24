@@ -30,9 +30,32 @@ class Post(models.Model):
         self.published_date = timezone.now()
         self.save()
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = 'Запись в блоге'
         verbose_name_plural = 'Записи в блоге'
 
+
+class Comment(models.Model):
+    post = models.ForeignKey('blog.Post',
+                             on_delete=models.CASCADE,
+                             related_name='comments')
+    author = models.CharField(max_length=200, verbose_name="Имя")
+    text = models.TextField(verbose_name="Комментарий")
+    created_date = models.DateTimeField(default=timezone.now,
+                                        verbose_name="Дата создания")
+    approved_comment = models.BooleanField(default=False,
+                                           verbose_name="Одобрен?")
+
+    def approve(self):
+        self.approved_comment = True
+        self.save()
+
     def __str__(self):
-        return self.title
+        return self.text
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
