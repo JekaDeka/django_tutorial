@@ -19,9 +19,14 @@ def post_detail(request, id):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-def post_add(request):
+def post_update(request, id):
+    post = get_object_or_404(Post, id=id) if id else None
+
+    if post and post.author != request.user:
+        return redirect('post_list')
+
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -29,8 +34,14 @@ def post_add(request):
             post.save()
             return redirect('post_detail', id=post.id)
     else:
-        form = PostForm()
+        form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+def post_edit(request, id=None):
+    if request.user.is_authenticated:
+        return post_update(request, id)
+    return redirect('post_list')
 
 
 def handler404(request, exception, template_name="404.html"):
