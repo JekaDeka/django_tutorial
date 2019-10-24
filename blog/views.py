@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import (get_object_or_404, redirect, render,
                               render_to_response)
@@ -19,7 +20,8 @@ def post_detail(request, id):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-def post_update(request, id):
+@login_required
+def post_edit(request, id=None):
     post = get_object_or_404(Post, id=id) if id else None
 
     if post and post.author != request.user:
@@ -36,12 +38,6 @@ def post_update(request, id):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
-
-
-def post_edit(request, id=None):
-    if request.user.is_authenticated:
-        return post_update(request, id)
-    return redirect('post_list')
 
 
 def handler404(request, exception, template_name="404.html"):
