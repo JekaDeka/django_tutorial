@@ -123,6 +123,7 @@ class BlogPostViewSet(ActionSerializedViewSet):
     def publish(self, request, pk=None):
         post = self.get_object()
         if request.user == post.author:
+            post.publish()
             return Response({'message': 'blog post was published'},
                             status=status.HTTP_200_OK)
         else:

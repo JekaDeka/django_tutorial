@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.test import APIClient
 
 from ..models import Post
 from ..serializers import BlogPostDetailSerializer, BlogPostListSerializer
@@ -132,3 +133,25 @@ class DeleteSinglePostTest(TestCase):
     def test_invalid_delete_post(self):
         response = client.delete(reverse('post-detail', kwargs={'pk': 9999}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class PublishSinglePostTest(TestCase):
+    """ Test module for publishing an existing post record """
+    def setUp(self):
+        self.api = APIClient()
+        self.author = User.objects.create(username='test', password='test')
+        self.post = Post.objects.create(title='Blog Post #1',
+                                        text='Post Description',
+                                        author=self.author,
+                                        is_published=False)
+
+    def test_unauth_publish_post(self):
+        response = client.post(reverse('post-publish', args=[self.post.pk]))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_authenticated_publish_post(self):
+        self.api.force_authenticate(user=self.author)
+        response = self.api.post(reverse('post-publish', args=[self.post.pk]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        post = Post.objects.get(title='Blog Post #1')
+        self.assertEqual(post.is_published, True)
