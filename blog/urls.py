@@ -1,6 +1,12 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
 
 from . import views
+from .views import BlogPostViewSet, CommentViewSet
+
+router = routers.DefaultRouter()
+router.register(r'comments', CommentViewSet)
+router.register(r'posts', BlogPostViewSet)
 
 urlpatterns = [
     path('', views.post_list, name='post_list'),
@@ -9,4 +15,5 @@ urlpatterns = [
     path('posts/<int:id>/publish/', views.post_publish, name='post_publish'),
     path('posts/<int:id>/comment/', views.add_comment, name='add_comment'),
     path('posts/add/', views.post_edit, name='post_add'),
+    path('api/', include(router.urls)),
 ]

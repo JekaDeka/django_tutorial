@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.template.defaultfilters import truncatewords
 from django.urls import reverse
 from django.utils import timezone
 
@@ -28,7 +29,11 @@ class Post(models.Model):
 
     def publish(self):
         self.published_date = timezone.now()
+        self.is_published = True
         self.save()
+
+    def get_text_preview(self):
+        return truncatewords(self.text, 10)
 
     def __str__(self):
         return self.title
@@ -46,11 +51,10 @@ class Comment(models.Model):
     text = models.TextField(verbose_name="Комментарий")
     created_date = models.DateTimeField(default=timezone.now,
                                         verbose_name="Дата создания")
-    approved_comment = models.BooleanField(default=False,
-                                           verbose_name="Одобрен?")
+    approved = models.BooleanField(default=False, verbose_name="Одобрен?")
 
     def approve(self):
-        self.approved_comment = True
+        self.approved = True
         self.save()
 
     def __str__(self):
