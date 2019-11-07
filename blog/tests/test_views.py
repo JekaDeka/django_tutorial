@@ -81,3 +81,54 @@ class CreateNewPostTest(TestCase):
                                data=json.dumps(self.invalid_payload),
                                content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateSinglePostTest(TestCase):
+    """ Test module for updating an existing post record """
+    def setUp(self):
+        self.author = User.objects.create(username='test')
+        self.post = Post.objects.create(title='Blog Post #1',
+                                        text='Post Description',
+                                        author=self.author)
+        self.valid_payload = {
+            'title': 'Blog Post #1',
+            'text': 'Blog Post Description',
+            'author': 1,
+        }
+        self.invalid_payload = {
+            'title': 'Blog Post #1',
+            'text': None,
+            'author': 1,
+        }
+
+    def test_valid_update_post(self):
+        response = client.put(reverse('post-detail',
+                                      kwargs={'pk': self.post.pk}),
+                              data=json.dumps(self.valid_payload),
+                              content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_invalid_update_post(self):
+        response = client.put(reverse('post-detail',
+                                      kwargs={'pk': self.post.pk}),
+                              data=json.dumps(self.invalid_payload),
+                              content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteSinglePostTest(TestCase):
+    """ Test module for deleting an existing post record """
+    def setUp(self):
+        self.author = User.objects.create(username='test')
+        self.post = Post.objects.create(title='Blog Post #1',
+                                        text='Post Description',
+                                        author=self.author)
+
+    def test_valid_delete_post(self):
+        response = client.delete(
+            reverse('post-detail', kwargs={'pk': self.post.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_invalid_delete_post(self):
+        response = client.delete(reverse('post-detail', kwargs={'pk': 9999}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
