@@ -120,10 +120,11 @@ class BlogPostViewSet(ActionSerializedViewSet):
     @action(detail=True,
             methods=['post'],
             permission_classes=[IsAuthenticated])
-    def post_publish(self, request, pk=None):
+    def publish(self, request, pk=None):
         post = self.get_object()
         if request.user == post.author:
-            return Response({'status': 'blog post was published'})
+            return Response({'message': 'blog post was published'},
+                            status=status.HTTP_200_OK)
         else:
             return Response({'error': 'You don\t have permissions'},
                             status=status.HTTP_403_FORBIDDEN)
