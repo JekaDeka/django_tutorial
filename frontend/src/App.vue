@@ -26,15 +26,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
     <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col class="text-center">
-            <v-card>
-              <TransactionTable />
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+      <router-view />
     </v-content>
 
     <v-footer color="primary" app>
@@ -45,12 +37,10 @@
 </template>
 
 <script>
-import TransactionTable from '@/components/TransactionTable'
 
 export default {
   name: 'App',
   components: {
-    TransactionTable
   },
   data () {
     return {
