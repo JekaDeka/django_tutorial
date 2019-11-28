@@ -1,7 +1,7 @@
 <template>
   <v-card class="elevation-12">
     <v-toolbar color="primary" dark flat>
-      <v-toolbar-title>Login</v-toolbar-title>
+      <v-toolbar-title>Войти в сервис</v-toolbar-title>
     </v-toolbar>
     <v-card-text>
       <v-form
@@ -11,7 +11,7 @@
         @keyup.native.enter="submit"
       >
         <v-text-field
-          label="Login"
+          label="Логин"
           name="username"
           prepend-icon="mdi-account"
           type="text"
@@ -22,7 +22,7 @@
 
         <v-text-field
           id="password"
-          label="Password"
+          label="Пароль"
           name="password"
           prepend-icon="mdi-lock"
           type="password"
@@ -33,7 +33,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn color="primary" :loading="loading" @click="submit">Login</v-btn>
+      <v-btn color="primary" :loading="loading" @click="submit">Войти</v-btn>
     </v-card-actions>
   </v-card>
 </template>

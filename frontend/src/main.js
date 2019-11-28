@@ -10,6 +10,13 @@ import './plugins/vue.logger'
 import './plugins/vue.notifications'
 import './plugins/api.service' // vue.logger dependence, place below!!!
 import './auth.control'
+
+import Default from '@/layouts/Default.vue'
+import Centered from '@/layouts/Centered.vue'
+
+Vue.component('default-layout', Default)
+Vue.component('centered-layout', Centered)
+
 Vue.config.productionTip = false
 
 new Vue({
