@@ -9,7 +9,7 @@ const routes = [{
   meta: {
     title: 'Главная'
   },
-  component: () => import('@/views/Home.vue').default
+  component: () => import('@/views/Home.vue')
 },
 {
   path: '/login',

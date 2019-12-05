@@ -131,7 +131,14 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [],
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DATETIME_FORMAT': '%d.%m.%Y %H:%M',
+    'DATE_FORMAT': '%d.%m.%Y',
+    'DATE_INPUT_FORMATS': ['%d.%m.%Y'],
+    'DATETIME_INPUT_FORMATS': ['%d.%m.%Y %H:%M'],
+    'EXCEPTION_HANDLER': 'core.helpers.custom_exception_handler',
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_FORMAT = 'd.m.y  H:m'

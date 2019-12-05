@@ -9,9 +9,9 @@ import {
   notifier
 } from '@/plugins/vue.notifications'
 
-axios.interceptors.response.use(function (response) {
+axios.interceptors.response.use(function(response) {
   return response
-}, function (error) {
+}, function(error) {
   if (error.response) {
     switch (error.response.status) {
       case 400:
@@ -46,61 +46,61 @@ axios.interceptors.response.use(function (response) {
 })
 
 const ApiService = {
-  init () {
+  init() {
     Vue.$log.debug('init api service')
     Vue.use(VueAxios, axios)
     Vue.axios.defaults.baseURL = API_URL
     Vue.axios.defaults.timeout = 15000
   },
 
-  setHeader () {
+  setHeader() {
     if (JwtService.getToken()) {
       Vue.$log.debug('init api service header token')
       Vue.axios.defaults.headers.common['Authorization'] = `Bearer ${JwtService.getToken()}`
     }
   },
 
-  query (resource, params) {
+  query(resource, params) {
     return Vue.axios.get(`${resource}/`, params)
   },
 
-  get (resource, slug = '', extraRoute = '') {
+  get(resource, slug = '', extraRoute = '') {
     const params = [`${resource}`, `${slug}`, `${extraRoute}`]
     let url = params.join('/').replace(/\/\/$/, '/')
     url = url[url.length - 1] !== '/' ? url = url.concat('/') : url
     return Vue.axios.get(url)
   },
-  get_file (resource, slug = '', extraRoute = '') {
+  get_file(resource, slug = '', extraRoute = '') {
     const params = [`${resource}`, `${slug}`, `${extraRoute}`]
     const url = params.join('/').replace(/\/\/$/, '/')
     return Vue.axios.get(url, {
       responseType: 'blob'
     })
   },
-  update_extraRoute (resource, slug, params, extraRoute, config = {}) {
+  update_extraRoute(resource, slug, params, extraRoute, config = {}) {
     return Vue.axios.put(`${resource}/${slug}/${extraRoute}/`, params, config)
   },
-  post_extraRoute (resource, slug, params, extraRoute, config = {}) {
+  post_extraRoute(resource, slug, params, extraRoute, config = {}) {
     return Vue.axios.post(`${resource}/${slug}/${extraRoute}/`, params, config)
   },
-  post (resource, params, config = {}) {
+  post(resource, params, config = {}) {
     return Vue.axios.post(`${resource}/`, params, config)
   },
-  put (resource, params, config = {}) {
+  put(resource, params, config = {}) {
     return Vue.axios.put(`${resource}/`, params, config)
   },
-  update (resource, slug, params) {
+  update(resource, slug, params) {
     return Vue.axios.put(`${resource}/${slug}/`, params)
   },
-  patch (resource, slug, params) {
+  patch(resource, slug, params) {
     return Vue.axios.patch(`${resource}/${slug}/`, params)
   },
-  delete (resource) {
+  delete(resource) {
     return Vue.axios.delete(resource).catch(error => {
       notifier.warning(JSON.stringify(error.response.data))
     })
   },
-  get_app_version () {
+  get_app_version() {
     return Vue.axios.get('get_app_version/')
   }
 }

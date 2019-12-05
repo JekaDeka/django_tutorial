@@ -11,22 +11,22 @@
         @keyup.native.enter="submit"
       >
         <v-text-field
+          v-model="username"
           label="Логин"
           name="username"
           prepend-icon="mdi-account"
           type="text"
-          v-model="username"
           :counter="15"
           :rules="loginRules"
         />
 
         <v-text-field
           id="password"
+          v-model="password"
           label="Пароль"
           name="password"
           prepend-icon="mdi-lock"
           type="password"
-          v-model="password"
           :rules="passRules"
         />
       </v-form>
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       valid: true,
@@ -55,7 +55,7 @@ export default {
     }
   },
   methods: {
-    submit () {
+    submit() {
       if (this.$refs.form.validate()) {
         this.loading = true
         const payload = {

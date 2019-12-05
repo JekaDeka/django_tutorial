@@ -21,7 +21,8 @@ class BlogPostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'author', 'created_date', 'preview_text')
+        fields = ('id', 'title', 'author', 'published_date', 'preview_text',
+                  'text')
 
 
 class BlogPostCreateUpdateSerializer(serializers.ModelSerializer):

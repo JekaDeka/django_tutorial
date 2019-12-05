@@ -25,7 +25,7 @@ const mutations = {
 }
 
 const actions = {
-  async login (context, payload) {
+  async login(context, payload) {
     await AuthService.login(payload)
       .then((response) => {
         Vue.$log.debug('setting token')
@@ -36,7 +36,7 @@ const actions = {
         context.commit('PURGE_AUTH')
       })
   },
-  logout (context) {
+  logout(context) {
     context.commit('PURGE_AUTH')
   }
 }

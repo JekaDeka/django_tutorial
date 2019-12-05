@@ -1,6 +1,6 @@
-const title = 'ДиректПРО'
+const title = 'FrontendApp'
 
-export default function getPageTitle (pageTitle) {
+export default function getPageTitle(pageTitle) {
   if (pageTitle) {
     return `${pageTitle} - ${title}`
   }

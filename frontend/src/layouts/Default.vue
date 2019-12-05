@@ -2,20 +2,12 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app right>
       <v-list dense>
-        <v-list-item link>
+        <v-list-item link @click="logout">
           <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
+            <v-icon>mdi-exit-run</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Contact</v-list-item-title>
+            <v-list-item-title>Выход</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -26,7 +18,13 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
     <v-content>
-      <slot />
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col class="text-center">
+            <slot />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-content>
     <v-footer color="primary" app>
       <v-spacer />
@@ -37,9 +35,18 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       drawer: false
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout').then(() =>
+        this.$router.push({
+          name: 'Login'
+        })
+      )
     }
   }
 }
