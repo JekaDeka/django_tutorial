@@ -11,7 +11,7 @@ const defaultLayout = 'default'
 export default {
   name: 'App',
   computed: {
-    layout () {
+    layout() {
       return (this.$route.meta.layout || defaultLayout) + '-layout'
     }
   }
